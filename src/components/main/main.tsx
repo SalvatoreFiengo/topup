@@ -64,8 +64,10 @@ const MainComponent:FC = ()=>{
     );
 };
 const Main = styled.main`
+    padding-top: 2rem;
     display: flex;
     justify-content: center;
-    align-items: center;
+    background: rgb(204, 255, 246);
+    height: calc(100vh - 64px);
 `;
 export default MainComponent;

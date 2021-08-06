@@ -13,16 +13,6 @@ type SectionType = {
 const SectionComponent:FC<SectionType> = ({data, isError, error})=>{
 
     const [isOpen, toggleModal] = useState(false);
-    const [counter, setCounter] = useState(0);
-
-    const handleNextSelectPage = ()=>{
-        let count = counter+1;
-        setCounter(count)
-    };
-    const handlePrevSelectPage = ()=>{
-        let count = counter-1;
-        setCounter(count)
-    };
 
     useEffect(()=>{
         if(isError)toggleModal(true);
@@ -33,6 +23,7 @@ const SectionComponent:FC<SectionType> = ({data, isError, error})=>{
         <Section>
             <ModalComponent modalTitle={" Error "} modalMsg={error} isOpen={isOpen} toggleModal={toggleModal}/>
             <SelectComponent data={data}/>
+            
         </Section>
     );
 };

@@ -18,7 +18,8 @@ const Header = styled.header`
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0);
     transition: all 0.4s ease 0s;
-    margin-bottom: 2em;
+    background: rgb(204, 255, 246);
+    font-weight: bold;
     div{
         display: flex;
         flex-direction: row;
