@@ -4,21 +4,22 @@ import InfoComponent from './infoComponent';
 
 type CountriesSelectType = {
     data:any;
-    isCountrySelected: boolean;
+    isCountryInfo: boolean;
     handleCountrySelection:(country:any)=>void;
     toggleCountrySelection:()=>void;
     countryName: string;
 };
-const CountrySelectComponent:FC<CountriesSelectType> = ({data, isCountrySelected, handleCountrySelection, countryName,toggleCountrySelection}) =>{
+const CountrySelectComponent:FC<CountriesSelectType> = ({data, isCountryInfo, handleCountrySelection, countryName,toggleCountrySelection}) =>{
     const [search, updateSearch] = useState("");
+    
     const hanldeSearch = (event: React.FormEvent<HTMLInputElement>)=>{
-        updateSearch(event.currentTarget.value)
+        updateSearch(event.currentTarget.value)    
     };
 
     return(
         <CountrySelect>
-            <h2>Who would you like to top-up?</h2>
-            {isCountrySelected===false?
+            {isCountryInfo===false?<h2>Who would you like to top-up?</h2>:<h2>Summary</h2>}
+            {isCountryInfo===false?
             <>
                 <label >Search country
                     <input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>

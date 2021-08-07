@@ -1,34 +1,44 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-
+import InfoComponent from './infoComponent';
 type OperatorsSelectTypes={
     data: any;
     iso: string;
+    toggleOperatorInfo:()=>void;
+    isOperatorInfo: boolean;
+    handleSetOperator: (operator:any)=>void;
+    operator: string;
 }
-const OperatorsSelectComponent:FC<OperatorsSelectTypes> = ({data, iso})=>{
+const OperatorsSelectComponent:FC<OperatorsSelectTypes> = ({data, iso, toggleOperatorInfo, isOperatorInfo, handleSetOperator, operator})=>{
+    
     const operators = iso===""?data.operators:data.operators.filter((operator:any)=>operator.iso===iso)
     return(
         <OperatorsSelect>
-            <div><h2>Select your operator</h2></div>
+            {isOperatorInfo===false?
+            <>
+            <h2>Select your operator</h2>
             {operators.map((op:any)=>{
                 return(
-                    <div className="operator-card" key={op.id}><p>{op.name}</p></div>
+                    <div className="operator-card" key={op.id} onClick={()=>handleSetOperator(op)}><p>{op.name}</p></div>
                 );
             })}
+            </>
+            :
+
+            <InfoComponent label="Operator" name={operator} toggleFunc={toggleOperatorInfo}/>
+
+            }
         </OperatorsSelect>
     );
 };
 const OperatorsSelect = styled.div`
-    display: flex;
-    flex-flow: row wrap;
-    justify-contents: space-around;
-    div{
-        flex: 0 0 100%;
-        h2{
-            text-align: center;
-            margin-bottom: 2rem;
-        }
+    
+        
+    h2{
+        text-align: center;
+        margin-bottom: 2rem;
     }
+
     div.operator-card{
         width: 100%;
         height: 56px;

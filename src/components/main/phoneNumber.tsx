@@ -4,11 +4,13 @@ import InfoComponent from './infoComponent';
 
 type PhoneNumberComponentTypes = {
     prefix: string;
-    toggleOperators: ()=>void;
-    showOperators: boolean;
+    togglePhoneNumber: ()=>void;
+    showPhoneNumber: boolean;
+    setPhoneNumber: (phone:string)=>void;
+    phoneNumber: string;
 }
-const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, toggleOperators, showOperators})=>{
-    const [phoneNumber, setPhoneNumber] = useState("");
+const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, togglePhoneNumber, showPhoneNumber, setPhoneNumber, phoneNumber})=>{
+    
     const [isError, setIsError] = useState(false);
 
     const hanldeUpdatePhoneNumber = (event: React.FormEvent<HTMLInputElement>)=>{
@@ -32,30 +34,33 @@ const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, toggleO
     };
 
     const validatePhoneNumber=(phone:string)=>{
-        const re = /^\W[0-9]{2}\s\W\s\d+$/;
+        const re = /^\+\d+\s\-\s\d+$/;
         const test=re.test(phone);
         if (test===false){
             setIsError(true);
         }else{
+            if(phone.length < 6){
+                setIsError(true);
+            }
             setIsError(false);
         }
     };
-    const handleShowOperators = ()=>{
-        toggleOperators();
-    }
+
     return(
         <AddPhoneNumber>
-            {showOperators===false?
+            {showPhoneNumber?
             <>
                 <label>
                     <strong>Enter recipient phone number</strong>
                     <input type="text" placeholder={prefix} value={phoneNumber} onChange={hanldeUpdatePhoneNumber}/> 
-                    {isError? <p className="error">Error: Not a valid number</p>:null}
+                    {isError? <p className="error">Error: Not a valid number, expected prefix to be "+00 - "</p>:null}
                 </label>
-                <Button disabled={isError} onClick={handleShowOperators}>Continue</Button>
+                <Button disabled={isError} onClick={togglePhoneNumber}>Continue</Button>
             </>
             :
-            <InfoComponent label="Phone" name={phoneNumber} toggleFunc={toggleOperators}/>
+            <div>
+                <InfoComponent label="Phone" name={phoneNumber} toggleFunc={togglePhoneNumber}/>
+            </div>
             }
         </AddPhoneNumber>
     );

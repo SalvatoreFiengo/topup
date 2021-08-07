@@ -28,7 +28,10 @@ const SectionComponent:FC<SectionType> = ({data, isError, error})=>{
     );
 };
 const Section = styled.div`
-    width : 50%;
+    width : 100%;
     margin: 0 auto;
+    @media (min-width: 768px){
+        width: 50%;
+    }
 `;
 export default SectionComponent;
