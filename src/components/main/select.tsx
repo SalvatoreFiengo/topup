@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import CountrySelectComponent from './countrySelect';
 import AddPhoneNumber from './phoneNumber';
+import OperatorsSelectComponent from './operatorsSelect';
 
 type SelectType ={
     data: any;
@@ -10,22 +11,29 @@ type SelectType ={
 
 const SelectComponent:FC<SelectType> = ({data})=>{
     
-    const [isCountrySelected, toggleIsCountrySelected] = useState(true);
+    const [isCountrySelected, toggleIsCountrySelected] = useState(false);
+    const [showOperators, toggleOperators] = useState(false)
     const [selectedPrefix, updateSectedPrefix] = useState("");
     const [countryName, setCountry] = useState("");
+    const [iso, setIso] = useState("");
 
     const handleCountrySelection = (country:any)=>{
-        toggleIsCountrySelected(false);
-        updateSectedPrefix("(+" + country.prefix + ") - ");
+        toggleIsCountrySelected(true);
+        updateSectedPrefix("+" + country.prefix + " - ");
         setCountry(country.name);
+        setIso(country.iso)
     };
     const toggleCountrySelection = ()=>{
         toggleIsCountrySelected(!isCountrySelected);
     }
+    const handleToggleOperators = ()=>{
+        toggleOperators(!showOperators)
+    }
     return(
         <Select>
             <CountrySelectComponent data={data} handleCountrySelection={handleCountrySelection} isCountrySelected={isCountrySelected} countryName={countryName} toggleCountrySelection={toggleCountrySelection}/>  
-            <AddPhoneNumber prefix={selectedPrefix}/>   
+            <AddPhoneNumber prefix={selectedPrefix} toggleOperators={handleToggleOperators} showOperators={showOperators}/>  
+            {showOperators?<OperatorsSelectComponent data={data} iso={iso}/>:null} 
         </Select>
     );
 };

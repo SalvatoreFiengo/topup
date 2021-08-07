@@ -1,21 +1,24 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
+import InfoComponent from './infoComponent';
 
 type PhoneNumberComponentTypes = {
     prefix: string;
+    toggleOperators: ()=>void;
+    showOperators: boolean;
 }
-const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix})=>{
+const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, toggleOperators, showOperators})=>{
     const [phoneNumber, setPhoneNumber] = useState("");
     const [isError, setIsError] = useState(false);
+
     const hanldeUpdatePhoneNumber = (event: React.FormEvent<HTMLInputElement>)=>{
-        
         const phone = event.currentTarget.value;
         validatePhoneNumber(phone); 
         setPhoneNumber(formatPhoneNumber(phone, prefix));
     };
+
     const formatPhoneNumber = (phone:string, prefix:string)=>{
-        setIsError(false);
-        let formatted = '';
+        let formatted = "";
         if(phone.length === prefix.length-1){
             formatted= ""
         } 
@@ -27,21 +30,33 @@ const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix})=>{
         }
         return formatted;
     };
+
     const validatePhoneNumber=(phone:string)=>{
-        const re = /^\d+$/;
+        const re = /^\W[0-9]{2}\s\W\s\d+$/;
         const test=re.test(phone);
         if (test===false){
             setIsError(true);
+        }else{
+            setIsError(false);
         }
     };
+    const handleShowOperators = ()=>{
+        toggleOperators();
+    }
     return(
         <AddPhoneNumber>
-            <label>
-                <strong>Enter recipient phone number</strong>
-                <input type="text" placeholder={prefix} value={phoneNumber} onChange={hanldeUpdatePhoneNumber}/> 
-                {isError? <p className="error">Error: Not a valid number</p>:null}
-            </label>
-            <Button disabled={isError}>Continue</Button>
+            {showOperators===false?
+            <>
+                <label>
+                    <strong>Enter recipient phone number</strong>
+                    <input type="text" placeholder={prefix} value={phoneNumber} onChange={hanldeUpdatePhoneNumber}/> 
+                    {isError? <p className="error">Error: Not a valid number</p>:null}
+                </label>
+                <Button disabled={isError} onClick={handleShowOperators}>Continue</Button>
+            </>
+            :
+            <InfoComponent label="Phone" name={phoneNumber} toggleFunc={toggleOperators}/>
+            }
         </AddPhoneNumber>
     );
 };

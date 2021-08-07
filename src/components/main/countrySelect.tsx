@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
+import InfoComponent from './infoComponent';
 
 type CountriesSelectType = {
     data:any;
@@ -17,32 +18,36 @@ const CountrySelectComponent:FC<CountriesSelectType> = ({data, isCountrySelected
     return(
         <CountrySelect>
             <h2>Who would you like to top-up?</h2>
-            {isCountrySelected?
+            {isCountrySelected===false?
             <>
-            <label >Search country
-                <input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
-            </label>
-            {search!==""?data.countries.filter((country:any)=>country.name.toLowerCase().includes(search.toLowerCase())).map((country:any)=><div className="list-item" key={country.iso} onClick={()=>handleCountrySelection(country)}><p>(+{country.prefix})-{country.name}</p></div>):null}
+                <label >Search country
+                    <input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
+                </label>
+                {
+                search!==""?
+                    data.countries
+                        .filter((country:any)=>country.name.toLowerCase().includes(search.toLowerCase()))
+                        .map((country:any)=>{
+                            return(
+                                <div className="list-item" key={country.iso} onClick={()=>handleCountrySelection(country)}>
+                                    <p>(+{country.prefix})-{country.name}</p>
+                                </div>
+                                )})
+                            :null
+                }
             </>
             :
-            <Card>
-                <div>
-                    <strong>Country: </strong>
-                </div> 
-                <div>
-                    <strong>{countryName}</strong>
-                </div> 
-                <div className="back" onClick={toggleCountrySelection}>
-                    <strong>Edit</strong>
-                    <div className="arrow-right"></div>
-                </div>
-            </Card>
+            <InfoComponent label="Country" name={countryName} toggleFunc={toggleCountrySelection}/>
+
             }
             
         </CountrySelect>
     );
 };
 const CountrySelect = styled.div`
+    h2{
+        text-align: center;
+    }
     input[type="text"]{
         margin: 0.5em 0 2em 0;
         border: 1px solid rgb(112, 140, 140);
@@ -58,7 +63,6 @@ const CountrySelect = styled.div`
             outline: none;
         }
     } 
-
     div.list-item{
         width: 100%;
         height: 56px;
@@ -76,29 +80,5 @@ const CountrySelect = styled.div`
         }
     }
 `;
-const Card = styled.div`
-    display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
-    .back{
-        cursor: pointer;
-        color: rgb(217, 0, 199);
-        
-        .arrow-right{
-            display:inline-block;
-            margin-left: 0.5rem;
-            opacity: 0;
-            width:0;
-            height:0;
-            border-top: 5px solid transparent;
-            border-bottom: 5px solid transparent;
-            border-left: 5px solid rgb(217,0,199);
-        }
-        &:hover{
-            .arrow-right{
-                opacity:1;
-            }
-        }
-    }
-`;
+
 export default CountrySelectComponent;
