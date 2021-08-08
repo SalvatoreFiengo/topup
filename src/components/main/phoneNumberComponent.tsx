@@ -1,66 +1,61 @@
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
-import InfoComponent from './infoComponent';
+import {validatePhoneNumber} from '../../helper/validation';
+
 
 type PhoneNumberComponentTypes = {
     prefix: string;
-    togglePhoneNumber: ()=>void;
-    showPhoneNumber: boolean;
-    setPhoneNumber: (phone:string)=>void;
-    phoneNumber: string;
+    setState: (name:string, value:any)=>void;
+    phoneNumber: string | undefined;
 }
-const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, togglePhoneNumber, showPhoneNumber, setPhoneNumber, phoneNumber})=>{
-    
+const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, setState, phoneNumber, children})=>{
+    const [phone, setPhone]= useState<string>("");
     const [isError, setIsError] = useState(false);
 
     const hanldeUpdatePhoneNumber = (event: React.FormEvent<HTMLInputElement>)=>{
         const phone = event.currentTarget.value;
-        validatePhoneNumber(phone); 
-        setPhoneNumber(formatPhoneNumber(phone, prefix));
+        validatePhoneNumber(phone, setIsError);
+       
+        setPhone(formatPhoneNumber(phone, prefix));
+
+    };
+    const handleOnClick = (event: React.MouseEvent<HTMLElement>)=>{
+        event.preventDefault();
+        setState("phoneNumber", phone);
+        setPhone("");
+
     };
 
     const formatPhoneNumber = (phone:string, prefix:string)=>{
         let formatted = "";
-        if(phone.length === prefix.length-1){
+        let formattedPrefix = "+"+prefix+" - "
+        if(phone!==undefined && phone.length === formattedPrefix.length-1){
             formatted= ""
         } 
-        else if(phone.startsWith(prefix)){
-            formatted=phone;
+        else if(phone!==undefined && phone.startsWith(formattedPrefix)){
+            formatted = phone;
     
         }else{
-            formatted = prefix+phone;
+            formatted = formattedPrefix+phone;
         }
         return formatted;
     };
 
-    const validatePhoneNumber=(phone:string)=>{
-        const re = /^\+\d+\s\-\s\d+$/;
-        const test=re.test(phone);
-        if (test===false){
-            setIsError(true);
-        }else{
-            if(phone.length < 6){
-                setIsError(true);
-            }
-            setIsError(false);
-        }
-    };
-
     return(
         <AddPhoneNumber>
-            {showPhoneNumber?
+            {phoneNumber!=="" && phoneNumber!==null?
+            <>
+                {children}
+            </>
+            :
             <>
                 <label>
                     <strong>Enter recipient phone number</strong>
-                    <input type="text" placeholder={prefix} value={phoneNumber} onChange={hanldeUpdatePhoneNumber}/> 
-                    {isError? <p className="error">Error: Not a valid number, expected prefix to be "+00 - "</p>:null}
+                    <input type="text" placeholder={prefix} value={phone} onChange={hanldeUpdatePhoneNumber}/> 
+                    {isError? <p className="error">Error: Not a valid number</p>:null}
                 </label>
-                <Button disabled={isError} onClick={togglePhoneNumber}>Continue</Button>
+                <Button disabled={isError} onClick={handleOnClick}>Continue</Button>
             </>
-            :
-            <div>
-                <InfoComponent label="Phone" name={phoneNumber} toggleFunc={togglePhoneNumber}/>
-            </div>
             }
         </AddPhoneNumber>
     );
@@ -89,8 +84,8 @@ const AddPhoneNumber = styled.div`
         }
     }
 
-} `
-const Button = styled.button`
+} `;
+export const Button = styled.button`
     height: 56px;
     width: 100%;
     color: rgb(0, 74, 89);

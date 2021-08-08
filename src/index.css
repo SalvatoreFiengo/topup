@@ -7,9 +7,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: rgb(0, 74, 89);
   font-size: 14px;
+  height: 100%;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+*,*::before,*::after{
+  box-sizing: border-box;
 }

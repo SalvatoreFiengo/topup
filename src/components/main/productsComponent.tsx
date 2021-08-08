@@ -1,24 +1,26 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
-import InfoComponent from './infoComponent';
-
+import {Idata} from '../interfaces/interfaces'
 type ProductsComponentTypes = {
-    data: any;
-    id: string;
-    isProductInfo: boolean;
+    data: Idata | null;
+    id: string|undefined|null;
+    setState: (name:string, value:any)=>void;
+    amount: string| undefined | null;
 }
-const ProductsComponent:FC<ProductsComponentTypes> = ({data, id, isProductInfo})=>{
-    const product = id===""?"No Products found":data.products.filter((product:any) =>product.id===id)
+const ProductsComponent:FC<ProductsComponentTypes> = ({data, id, setState, amount, children})=>{
+
+    const product =data!==null? data.products.filter((product:any) =>product.id===id):null;
+
     const formatProd = (prod: string)=>{
         const stringArray = prod.split(" ");
         const result = [];
-        result.push(stringArray[0], stringArray[1])
+        result.push(stringArray[0], stringArray[1]);
 
         return result.join(" ");
     };
     return(
         <ProductsWrapper>
-            {isProductInfo===false?
+            {amount===null && product!==null?
             <>
                 
                 <h2>Choose an amount to continue</h2>
@@ -27,7 +29,10 @@ const ProductsComponent:FC<ProductsComponentTypes> = ({data, id, isProductInfo})
                 
                     product.products.map((prod:string, i:number)=>{
                         return(
-                            <ProductCard key={i}>
+                            <ProductCard key={i} onClick={()=>{
+                                setState("amount", formatProd(prod));
+
+                            }}>
                                 <p>Receiver Gets: </p>
                                 <div className="price"><strong>{formatProd(prod)}</strong></div>
                                 <div className="divider small">Topup amount {formatProd(prod)}</div>
@@ -39,7 +44,9 @@ const ProductsComponent:FC<ProductsComponentTypes> = ({data, id, isProductInfo})
                 </div>
             </>
             :
-            <InfoComponent label="Product" name={""} toggleFunc={()=>{}}/>
+            <>
+                {children}
+            </>
         }
         </ProductsWrapper>
     );
@@ -53,6 +60,7 @@ const ProductsWrapper = styled.div`
         display: flex;
         flex-flow: row wrap;
         justify-content: center;
+        margin: 0 auto;
     }
 `;
 const ProductCard = styled.div`
@@ -63,7 +71,7 @@ const ProductCard = styled.div`
     padding: 0 0.2rem 0.2rem 0.2rem;
     height: 100%;
     width: auto;
-    min-width: 200px;
+    min-width: 230px;
     margin: 0.2rem;
     cursor: pointer;
     p{

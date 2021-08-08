@@ -1,32 +1,31 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import InfoComponent from './infoComponent';
+import {OperatorType} from '../interfaces/interfaces';
+
 type OperatorsSelectTypes={
     data: any;
-    iso: string;
-    toggleOperatorInfo:()=>void;
-    isOperatorInfo: boolean;
-    handleSetOperator: (operator:any)=>void;
-    operator: string;
+    iso: string|undefined|null;
+    setState: (name:string, value:any)=>void;
+    operator: OperatorType|null;
 }
-const OperatorsSelectComponent:FC<OperatorsSelectTypes> = ({data, iso, toggleOperatorInfo, isOperatorInfo, handleSetOperator, operator})=>{
+const OperatorsSelectComponent:FC<OperatorsSelectTypes> = ({data, iso, setState, operator, children})=>{
     
     const operators = iso===""?data.operators:data.operators.filter((operator:any)=>operator.iso===iso)
     return(
         <OperatorsSelect>
-            {isOperatorInfo===false?
+            {operator===null?
             <>
-            <h2>Select your operator</h2>
-            {operators.map((op:any)=>{
-                return(
-                    <div className="operator-card" key={op.id} onClick={()=>handleSetOperator(op)}><p>{op.name}</p></div>
-                );
-            })}
+                <h2>Select your operator</h2>
+                {operators.map((op:any)=>{
+                    return(
+                        <div className="operator-card" key={op.id} onClick={()=>setState("operator",op)}><p>{op.name}</p></div>
+                    );
+                })}
             </>
             :
-
-            <InfoComponent label="Operator" name={operator} toggleFunc={toggleOperatorInfo}/>
-
+            <>
+                {children}
+            </>
             }
         </OperatorsSelect>
     );

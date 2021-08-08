@@ -1,15 +1,12 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
-import InfoComponent from './infoComponent';
-
+import { CountryType } from '../interfaces/interfaces';
 type CountriesSelectType = {
     data:any;
-    isCountryInfo: boolean;
-    handleCountrySelection:(country:any)=>void;
-    toggleCountrySelection:()=>void;
-    countryName: string;
+    setState:(name:string, value:any)=>void;
+    country: CountryType | undefined | null;
 };
-const CountrySelectComponent:FC<CountriesSelectType> = ({data, isCountryInfo, handleCountrySelection, countryName,toggleCountrySelection}) =>{
+const CountrySelectComponent:FC<CountriesSelectType> = ({data, setState, country, children}) =>{
     const [search, updateSearch] = useState("");
     
     const hanldeSearch = (event: React.FormEvent<HTMLInputElement>)=>{
@@ -18,8 +15,12 @@ const CountrySelectComponent:FC<CountriesSelectType> = ({data, isCountryInfo, ha
 
     return(
         <CountrySelect>
-            {isCountryInfo===false?<h2>Who would you like to top-up?</h2>:<h2>Summary</h2>}
-            {isCountryInfo===false?
+            {country!==null?<h2>Summary</h2>:<h2>Who would you like to top-up?</h2>}
+            {country!==null && country!==undefined?
+            <>
+                {children}
+            </>
+            :
             <>
                 <label >Search country
                     <input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
@@ -30,18 +31,14 @@ const CountrySelectComponent:FC<CountriesSelectType> = ({data, isCountryInfo, ha
                         .filter((country:any)=>country.name.toLowerCase().includes(search.toLowerCase()))
                         .map((country:any)=>{
                             return(
-                                <div className="list-item" key={country.iso} onClick={()=>handleCountrySelection(country)}>
+                                <div className="list-item" key={country.iso} onClick={()=>setState("country", country)}>
                                     <p>(+{country.prefix})-{country.name}</p>
                                 </div>
-                                )})
-                            :null
+                            )})
+                :null
                 }
             </>
-            :
-            <InfoComponent label="Country" name={countryName} toggleFunc={toggleCountrySelection}/>
-
-            }
-            
+            }          
         </CountrySelect>
     );
 };

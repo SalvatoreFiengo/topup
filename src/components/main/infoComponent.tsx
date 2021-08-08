@@ -2,20 +2,23 @@ import { FC } from 'react';
 import styled from 'styled-components';
 
 type InfoComponentTypes = {
-    label: string;
-    name: string;
-    toggleFunc: ()=>void
+    label: string | undefined | null;
+    setState:()=>void; 
+    msg: JSX.Element | string | undefined| null;  
 }
-const InfoComponent:FC<InfoComponentTypes> =({label, name, toggleFunc})=>{
+const InfoComponent:FC<InfoComponentTypes> =({label, msg ,setState})=>{
+    const toggleInfo = ()=>{
+        setState();
+    }
     return(
         <Info>
             <div>
                 <strong>{label}: </strong>
             </div> 
             <div>
-                <strong>{name}</strong>
+                <strong>{msg}</strong>
             </div> 
-            <div className="back" onClick={toggleFunc}>
+            <div className="back" onClick={toggleInfo}>
                 <strong>Edit</strong>
                 <div className="arrow-right"></div>
             </div>

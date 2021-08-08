@@ -1,0 +1,107 @@
+{
+    "countries": [
+        {
+            "iso": "AF",
+            "name": "Afghanistan",
+            "prefix": "33"
+        },
+        {
+            "iso": "IE",
+            "name": "Ireland",
+            "prefix": "18"
+        },
+        {
+            "iso": "DE",
+            "name": "Germany",
+            "prefix": "25"
+        }
+    ],
+    "operators": [
+        {
+            "id": "af-internet",
+            "iso": "AF",
+            "name": "Afghanistan Internet"
+        },
+        {
+            "id": "af-mobile",
+            "iso": "AF",
+            "name": "Afghanistan Mobile"
+        },
+        {
+            "id": "de-mobile",
+            "iso": "DE",
+            "name": "Germany Mobile Operator"
+        },
+        {
+            "id": "de-data",
+            "iso": "DE",
+            "name": "Germany data plans"
+        },
+        {
+            "id": "ie-one",
+            "iso": "IE",
+            "name": "Ireland Mobile One"
+        },
+        {
+            "id": "ie-two",
+            "iso": "IE",
+            "name": "Ireland Mobile Two"
+        }
+    ],
+    "products": [
+        {
+            "id": "af-internet",
+            "products": [
+                "10 AFN Internet Recharge",
+                "20 AFN Internet Recharge",
+                "30 AFN Internet Recharge",
+                "40 AFN Internet Recharge"
+            ]
+        },
+        {
+            "id": "af-mobile",
+            "products": [
+                "10 AFN Mobile",
+                "20 AFN Mobile",
+                "30 AFN Mobile",
+                "40 AFN Mobile"
+            ]
+        },
+        {
+            "id": "de-mobile",
+            "products": [
+                "10 EUR Mobile",
+                "20 EUR Mobile",
+                "30 EUR Mobile",
+                "40 EUR Mobile"
+            ]
+        },
+        {
+            "id": "de-data",
+            "products": [
+                "10 EUR Data",
+                "20 EUR Data",
+                "30 EUR Data",
+                "40 EUR Data"
+            ]
+        },
+        {
+            "id": "ie-one",
+            "products": [
+                "20 EUR Mobile",
+                "50 EUR Mobile",
+                "90 EUR Mobile",
+                "120 EUR Mobile"
+            ]
+        },
+        {
+            "id": "ie-two",
+            "products": [
+                "10 EUR Mobile",
+                "20 EUR Mobile",
+                "30 EUR Mobile",
+                "40 EUR Mobile"
+            ]
+        }
+    ]
+}
