@@ -22,3 +22,18 @@ export const validateFullName=(name:string|undefined)=>{
         }
     }
 }
+export const validateCard=(card:string|undefined):boolean=>{
+    if(card!==undefined){
+        const re=/^\d+$/;
+        const test=re.test(card);
+        if (test===false){
+            return true;
+        }else{
+            return false;
+        }
+    }else if(card===""){
+        return false;
+    }
+    return false;
+    
+}

@@ -1,10 +1,8 @@
 import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalComponent from '../modal/modal';
-import InfoComponent from './infoComponent';
-import {validateFullName} from '../../helper/validation';
-import {Button} from './phoneNumberComponent';
-import { setConstantValue } from 'typescript';
+import {validateFullName, validateCard} from '../../helper/validation';
+import {Input, Button, Error} from '../../styles/generalStyles';
 
 type formDatatypes = {  
     fullName?: string;
@@ -34,6 +32,7 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
     });
     const [isConfirmationModal, toggleConfirmationModal] = useState(false);
     const [showInfo, setShowInfo] = useState<string|null>("show");
+    const [IsCardError, setCardIsError] = useState<boolean>(false)
 
     useEffect(()=>{
         handleResetForm();
@@ -48,7 +47,8 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
             formData.cardNumber.length<=16
             ){
             let originalValue = value.replace(/-/g,"");
-            if(value.length>0 && originalValue.length %4 ===0){
+            setCardIsError(()=>validateCard(originalValue));
+            if(!IsCardError && value.length>0 && originalValue.length %4 ===0){
                 value+="-";
             }
         }
@@ -107,26 +107,27 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
             <>
                 <h2>Fill Your Credit Card Data</h2>
                 <CreditCardForm onSubmit={handleFormSubmit}>
-                    <div>
-                        <label>Card Holder Name
-                            <input className="input" type="text" placeholder="Name" name="fullName" value={formData.fullName} onChange={handleFormOnChange}/>
-                            {validateFullName(formData.fullName)?<p>Name is invalid, please insert "name surname" </p>:null}
+                    <div className="form-section">
+                        <label><div className="labelTitle">Card Holder Name</div>
+                            <Input className="input" type="text" placeholder="Name" name="fullName" value={formData.fullName} onChange={handleFormOnChange}/>
+                            {validateFullName(formData.fullName)?<Error>Name is invalid, please insert "Name Surname" </Error>:null}
                         </label>
                     </div>
-                    <div>
+                    <div className="form-section">
                         <label>Card Number
-                            <input className="input" type="text" placeholder="Card" maxLength={19} name="cardNumber" value={formData.cardNumber} onChange={handleFormOnChange}/>
+                            <Input className="input" type="text" placeholder="Card" maxLength={19} name="cardNumber" value={formData.cardNumber} onChange={handleFormOnChange}/>
+                            {IsCardError?<Error>Card is invalid, please insert only numbers </Error>:null}
                         </label>
                     </div>
                     <div className="end-date">
-                        <label> <p>End Date</p>
-                            <input className="input left" type="text" placeholder="01" maxLength={2} name="month" value={formData.month} onChange={handleFormOnChange}/>
-                            <input className="input right" type="text" placeholder="21" maxLength={2} name="year" value={formData.year} onChange={handleFormOnChange}/>
+                        <label> <div>End Date</div>
+                            <Input className="left" type="text" placeholder="01" maxLength={2} name="month" value={formData.month} onChange={handleFormOnChange}/>
+                            <Input className="right" type="text" placeholder="21" maxLength={2} name="year" value={formData.year} onChange={handleFormOnChange}/>
                         </label>    
                     </div>
-                    <div>
+                    <div className="form-section">
                         <label>Card Secret number (CCV)
-                            <input className="input" type="text" placeholder="CCV" maxLength={3} name="CCV" value={formData.CCV} onChange={handleFormOnChange}/>
+                            <Input className="input" type="text" placeholder="CCV" maxLength={3} name="CCV" value={formData.CCV} onChange={handleFormOnChange}/>
                         </label>
                     </div>
                     <div className="form-cockpit">
@@ -148,25 +149,15 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
 const CreditCard = styled.div`
     h2{
         text-align: center;
-    }    
+    } 
+
 `;
 const CreditCardForm = styled.form`
-    .input{
-        margin: 0.5em 0 2em 0;
-        border: 1px solid rgb(112, 140, 140);
-        border-radius: 8px;
-        height: 40px;
-        width: 100%;
-        display: block;
-        color: rgb(0, 74, 89);
-        padding: 0px 16px;
-        box-sizing: border-box;
-        &:focus { 
-            box-shadow: rgb(203 242 0) 0px 0px 2px 2px;
-            outline: none;
-        }
+    .form-section{
+        margin-bottom: 1.5rem;
     }
     .end-date{
+        margin-bottom: 1.5rem;
         p{
             display: inline-block;
             margin-right: 1rem;

@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
+import { Input } from '../../styles/generalStyles';
 import { CountryType } from '../interfaces/interfaces';
 type CountriesSelectType = {
     data:any;
@@ -23,7 +24,7 @@ const CountrySelectComponent:FC<CountriesSelectType> = ({data, setState, country
             :
             <>
                 <label >Search country
-                    <input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
+                    <Input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
                 </label>
                 {
                 search!==""?
@@ -46,21 +47,6 @@ const CountrySelect = styled.div`
     h2{
         text-align: center;
     }
-    input[type="text"]{
-        margin: 0.5em 0 2em 0;
-        border: 1px solid rgb(112, 140, 140);
-        border-radius: 8px;
-        height: 48px;
-        display: block;
-        width: 100%;
-        color: rgb(0, 74, 89);
-        padding: 0px 16px;
-        box-sizing: border-box;
-        &:focus { 
-            box-shadow: rgb(203 242 0) 0px 0px 2px 2px;
-            outline: none;
-        }
-    } 
     div.list-item{
         width: 100%;
         height: 56px;

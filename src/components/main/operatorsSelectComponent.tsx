@@ -30,14 +30,11 @@ const OperatorsSelectComponent:FC<OperatorsSelectTypes> = ({data, iso, setState,
         </OperatorsSelect>
     );
 };
-const OperatorsSelect = styled.div`
-    
-        
+const OperatorsSelect = styled.div` 
     h2{
         text-align: center;
         margin-bottom: 2rem;
     }
-
     div.operator-card{
         width: 100%;
         height: 56px;
