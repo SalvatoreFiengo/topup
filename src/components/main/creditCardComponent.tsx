@@ -1,26 +1,12 @@
 import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalComponent from '../modal/modal';
-import {validateFullName, validateCard} from '../../helper/validation';
-import {Input, Button, Error} from '../../styles/generalStyles';
+import { validateFormFields } from '../../helper/validation';
+import { Input, Button, Error } from '../../styles/generalStyles';
+import { IccError, IcreditCardComponent, IformData } from '../interfaces/interfaces';
 
-type formDatatypes = {  
-    fullName?: string;
-    cardNumber?: string;
-    month?: string;
-    year?: string;
-    CCV?: string;
-    phoneNumber?: string; 
-    amount?: string; 
-    currency?: string;  
-} 
-type CreditCardComponentTypes = {
-    phoneNumberProp: string;
-    amountProp: string;
-    setState:(name:string, value:any)=>void;
-}
-const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amountProp, children, setState})=>{
-    const [formData, updateFormData] = useState<formDatatypes>({
+const CreditCardComponent: FC<IcreditCardComponent> =({phoneNumberProp, amountProp, children, setState})=>{
+    const [formData, updateFormData] = useState<IformData>({
         fullName: "",
         cardNumber: "",
         month: "",
@@ -32,7 +18,14 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
     });
     const [isConfirmationModal, toggleConfirmationModal] = useState(false);
     const [showInfo, setShowInfo] = useState<string|null>("show");
-    const [IsCardError, setCardIsError] = useState<boolean>(false)
+    const [error, setIsError] = useState<IccError>({
+        isNameError: true,
+        isCardError: true,
+        isMonthError: true,
+        isYearError: true,
+        isCCVError: true,
+        isNotCheckout: true,
+    });
 
     useEffect(()=>{
         handleResetForm();
@@ -41,20 +34,20 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
     const handleFormOnChange = (event:React.FormEvent<HTMLInputElement>)=>{
         const key = event.currentTarget.name;
         let value = event.currentTarget.value;
-        if( key === "cardNumber"&&
-            formData.cardNumber !== undefined && 
-            value.length >= formData.cardNumber.length && 
-            formData.cardNumber.length<=16
-            ){
-            let originalValue = value.replace(/-/g,"");
-            setCardIsError(()=>validateCard(originalValue));
-            if(!IsCardError && value.length>0 && originalValue.length %4 ===0){
-                value+="-";
-            }
-        }
+
+        const validation = validateFormFields(key, value, error, formData.cardNumber);
+
+        setIsError(validation.state);
+        
+        if(error.isNameError || error.isCardError){
+            setIsError({...error, isNotCheckout: false});
+        }else{
+            setIsError({...error, isNotCheckout: true});
+        };
+
         updateFormData({
             ...formData,
-            [key]: value
+            [key]: validation.value
         });
     };
 
@@ -77,15 +70,16 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
     };
     const handleResetForm = ()=>{
         updateFormData({
-            fullName: undefined,
-            cardNumber: undefined,
-            month: undefined,
-            year: undefined,
-            CCV: undefined ,
-            phoneNumber: undefined,
-            amount: undefined,
-            currency: undefined,
+            fullName: "",
+            cardNumber: "",
+            month: "",
+            year: "",
+            CCV: "" ,
+            phoneNumber: "",
+            amount: "",
+            currency: "",
         });
+        setIsError({...error, isNotCheckout: true})
     }
 
     const handleShowModal = ()=>{
@@ -110,35 +104,38 @@ const CreditCardComponent: FC<CreditCardComponentTypes> =({phoneNumberProp, amou
                     <div className="form-section">
                         <label><div className="labelTitle">Card Holder Name</div>
                             <Input className="input" type="text" placeholder="Name" name="fullName" value={formData.fullName} onChange={handleFormOnChange}/>
-                            {validateFullName(formData.fullName)?<Error>Name is invalid, please insert "Name Surname" </Error>:null}
+                            {error.isNameError?<Error multi={false}>Name is {formData.fullName!==""?'invalid':'missing'}, please insert "Name Surname" </Error>:null}
                         </label>
                     </div>
                     <div className="form-section">
                         <label>Card Number
                             <Input className="input" type="text" placeholder="Card" maxLength={19} name="cardNumber" value={formData.cardNumber} onChange={handleFormOnChange}/>
-                            {IsCardError?<Error>Card is invalid, please insert only numbers </Error>:null}
+                            {error.isCardError?<Error multi={false}>Card is {formData.cardNumber!==""?'invalid':'missing'}, please insert only numbers </Error>:null}
                         </label>
                     </div>
                     <div className="end-date">
                         <label> <div>End Date</div>
                             <Input className="left" type="text" placeholder="01" maxLength={2} name="month" value={formData.month} onChange={handleFormOnChange}/>
                             <Input className="right" type="text" placeholder="21" maxLength={2} name="year" value={formData.year} onChange={handleFormOnChange}/>
+                                <div>{error.isMonthError?<Error multi={true}>Month is {formData.month!==""?'invalid':'missing'}</Error>:null}
+                                {error.isYearError?<Error multi={true}>Year is {formData.year!==""?'invalid':'missing'}</Error>:null}</div>
                         </label>    
                     </div>
                     <div className="form-section">
                         <label>Card Secret number (CCV)
                             <Input className="input" type="text" placeholder="CCV" maxLength={3} name="CCV" value={formData.CCV} onChange={handleFormOnChange}/>
+                            {error.isCCVError?<Error multi={false}>Secret Code is {formData.CCV!==""?'invalid':'missing'}, please insert only 3 numbers </Error>:null}
                         </label>
                     </div>
                     <div className="form-cockpit">
-                        <Checkout type="submit">Confirm</Checkout><Back onClick={handleBackButton}>Back</Back>
+                        <Checkout disabled={error.isNotCheckout} type="submit">Confirm</Checkout><Back onClick={handleBackButton}>Back</Back>
                     </div>
                 </CreditCardForm>
             </>
             :
             <>
             {children}
-            <Button disabled={false} onClick={handleShowModal}>Checkout</Button>
+            <Button onClick={handleShowModal}>Checkout</Button>
             </>
             }
             <ModalComponent isOpen={isConfirmationModal} toggleModal={handleShowModal} modalTitle={"Successful"} modalMsg={confirmationMsg(phoneNumberProp)} color={"rgb(0, 74, 89);"}/>
@@ -185,15 +182,20 @@ const CreditCardForm = styled.form`
     }
 `;
 const Checkout = styled(Button)`
-    width: 30%;
+    width: 40%;
     float: left;
-
+    @media(min-width: 768px){
+        width: 30%; 
+    }
 `
 const Back = styled(Button)`
-    width: 30%;
+    width: 40%;
     color: whitesmoke;
     background-color: rgb(217,0,199);
     float: right;
+    @media(min-width: 768px){
+        width: 30%; 
+    }
 
 `
 export default CreditCardComponent;

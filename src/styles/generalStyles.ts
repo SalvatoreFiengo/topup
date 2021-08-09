@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ErrorType } from "../components/interfaces/types";
 
 export const Input = styled.input`
     margin: 0.5em 0 0 0;
@@ -28,9 +29,10 @@ export const Input = styled.input`
         outline: none;
     }
 `
+
 export const Error = styled.p`
-    margin-top:0.2em;
-    color:rgb(217,0,199);
+    margin: ${(props: ErrorType)=>props.multi?"0 2em 0 0.1em":"0.2em 0 0 0"};
+    color: rgb(217,0,199);
 `;
 
 export const Button = styled.button`

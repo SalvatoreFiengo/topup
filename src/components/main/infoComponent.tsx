@@ -15,7 +15,7 @@ const InfoComponent:FC<InfoComponentTypes> =({label, msg ,setState})=>{
             <div>
                 <strong>{label}: </strong>
             </div> 
-            <div>
+            <div className="msg-spacer">
                 <strong>{msg}</strong>
             </div> 
             <div className="back" onClick={toggleInfo}>
@@ -30,6 +30,9 @@ const Info = styled.div`
     flex-flow: row nowrap;
     justify-content: space-between;
     margin: 2rem 0 2rem 0;
+    .msg-spacer{
+        margin: 0 1em 0 1em;
+    }
     .back{
         cursor: pointer;
         color: rgb(217, 0, 199);

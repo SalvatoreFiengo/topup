@@ -1,13 +1,9 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Input } from '../../styles/generalStyles';
-import { CountryType } from '../interfaces/interfaces';
-type CountriesSelectType = {
-    data:any;
-    setState:(name:string, value:any)=>void;
-    country: CountryType | undefined | null;
-};
-const CountrySelectComponent:FC<CountriesSelectType> = ({data, setState, country, children}) =>{
+import { IcountriesSelect } from '../interfaces/interfaces';
+
+const CountrySelectComponent:FC<IcountriesSelect> = ({data, setState, country, children}) =>{
     const [search, updateSearch] = useState("");
     
     const hanldeSearch = (event: React.FormEvent<HTMLInputElement>)=>{
@@ -26,6 +22,7 @@ const CountrySelectComponent:FC<CountriesSelectType> = ({data, setState, country
                 <label >Search country
                     <Input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
                 </label>
+                <div className="list-wrapper">
                 {
                 search!==""?
                     data.countries
@@ -38,6 +35,7 @@ const CountrySelectComponent:FC<CountriesSelectType> = ({data, setState, country
                             )})
                 :null
                 }
+                </div>
             </>
             }          
         </CountrySelect>
@@ -47,20 +45,22 @@ const CountrySelect = styled.div`
     h2{
         text-align: center;
     }
-    div.list-item{
-        width: 100%;
-        height: 56px;
-        text-align: center;
-        border: 1px solid rgb(112, 140, 140);
-        border-radius: 8px;
-        margin: 0 auto;
-        margin-bottom: 0.2rem;
-        cursor: pointer;
-        p{
-            line-height: 1.5;
-        }
-        &:hover{
-            box-shadow: rgb(203 242 0) 0px 0px 2px 2px;
+    .list-wrapper{
+        margin-top: 1rem;
+        div{
+            width: 100%;
+            height: 56px;
+            text-align: center;
+            border: 1px solid rgb(112, 140, 140);
+            border-radius: 8px;
+            margin-bottom: 0.2rem;
+            cursor: pointer;
+            p{
+                line-height: 1.5;
+            }
+            &:hover{
+                box-shadow: rgb(203 242 0) 0px 0px 2px 2px;
+            }
         }
     }
 `;

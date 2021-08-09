@@ -1,14 +1,9 @@
 import React, { FC, useState } from 'react';
-import {Input, Button, Error} from '../../styles/generalStyles';
-import {validatePhoneNumber} from '../../helper/validation';
+import { Input, Button, Error } from '../../styles/generalStyles';
+import { validatePhoneNumber } from '../../helper/validation';
+import { IphoneNumberComponent } from '../interfaces/interfaces';
 
-
-type PhoneNumberComponentTypes = {
-    prefix: string;
-    setState: (name:string, value:any)=>void;
-    phoneNumber: string | undefined;
-}
-const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, setState, phoneNumber, children})=>{
+const AddPhoneNumberComponent: FC<IphoneNumberComponent> = ({prefix, setState, phoneNumber, children})=>{
     const [phone, setPhone]= useState<string>("");
     const [isError, setIsError] = useState(false);
 
@@ -52,7 +47,7 @@ const AddPhoneNumberComponent: FC<PhoneNumberComponentTypes> = ({prefix, setStat
                 <label>
                     <strong>Enter recipient phone number</strong>
                     <Input type="text" placeholder={prefix} value={phone} onChange={hanldeUpdatePhoneNumber}/> 
-                    {isError? <Error className="error">Error: Not a valid number</Error>:null}
+                    {isError? <Error className="error" multi={false}>Error: Not a valid number</Error>:null}
                 </label>
                 <Button disabled={isError} onClick={handleOnClick}>Continue</Button>
             </>

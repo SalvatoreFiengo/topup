@@ -67,7 +67,10 @@ const Main = styled.main`
     display: flex;
     justify-content: center;
     background: rgb(204, 255, 246);
-    height: 100vh;
+    min-height: 100vh;
+    @media(min-width: 768px){
+        padding-top: 3rem;
+    }
 `;
 
 export default MainComponent;

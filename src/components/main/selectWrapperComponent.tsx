@@ -1,7 +1,7 @@
 import {FC, useState} from 'react';
 import styled from 'styled-components';
-import { Idata, OperatorType, CountryType } from '../interfaces/interfaces';
-import CountrySelectComponent from './countrySelect';
+import { Idata, IappMainState} from '../interfaces/interfaces';
+import CountrySelectComponent from './countrySelectComponent';
 import AddPhoneNumber from './phoneNumberComponent';
 import OperatorsSelectComponent from './operatorsSelectComponent';
 import ProductComponent from './productsComponent';
@@ -11,16 +11,9 @@ import InfoComponent from './infoComponent';
 type SelectWrapperComponentTypes ={
     data: Idata|null;
 }
-export type State = {
-    phoneNumber: string,
-    country: CountryType | null,
-    operator: OperatorType | null,
-    amount: string | undefined | null,
-    cardNumber: string|null
-}
 
 const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
-    const [state, setState] = useState<State>({
+    const [state, setState] = useState<IappMainState>({
         phoneNumber: "",
         country: null,
         operator: null,
@@ -32,7 +25,6 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
             ...state,
             [name]:value
         }))
-        console.log(state.phoneNumber)
     }
     return(
         <SelectWrapper>
