@@ -11,3 +11,7 @@ export type OperatorType = {
 export type ErrorType ={
     multi: boolean;
 }
+export type validationIsErrorReturnType = {
+    value:string;
+    isError:boolean;
+}

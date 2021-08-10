@@ -20,22 +20,22 @@ const MainComponent:FC = ()=>{
         error:"",
         isError: false
       });
+
     const [isOpen, toggleModal] = useState<boolean>(false);
       const handleToggleModal = ():void=>{
           toggleModal(!isOpen);
       };
+
     const handleGetData = ():void=>{
-        try{ 
-            getData()
-            .then((body)=>{
-                setData({
-                    ...fetchData,
-                    data:body,
-                    isLoading:false
-                })
-            });
-        }
-        catch(error){
+
+        getData()
+        .then((body)=>{
+            setData({
+                ...fetchData,
+                data:body,
+                isLoading:false
+            })
+        }).catch((error) =>{
             setData({
                 ...fetchData,
                 error: error.message,
@@ -44,7 +44,7 @@ const MainComponent:FC = ()=>{
                 data: mockData
             })
             toggleModal(true);
-        }
+        });
     }
     useEffect (() => {
         

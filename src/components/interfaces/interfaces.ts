@@ -62,7 +62,7 @@ export interface ICreditCardComponent {
     setState:(name:string, value:any)=>void;
 }
 
-export interface validation {
+export interface IValidation {
     value: string;
     state: IccError
 };
