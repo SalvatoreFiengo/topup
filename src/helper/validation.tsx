@@ -14,7 +14,7 @@ export const validate=(key:string, value:string|undefined):boolean=>{
                     re = /^\+\d+\s-\s\d{7,10}$/;
                     break;
                 case "fullName":
-                    re=/^[A-Z][a-z]+\s[A-Z][a-z]+$/;
+                    re=/^[a-z]+\s[a-z]+$/;
                     break;
                 case "cardNumber":
                     re=/^\d{15,16}$/;
@@ -48,17 +48,18 @@ const checkMonthIsError = (value: string, isError:boolean):validationIsErrorRetu
     const checkError= validate("",value);
     let result:validationIsErrorReturnType;
 
-    if(checkError){
-        isError= checkError;
-    }else if(!value.startsWith("0")){
-        const intValue = parseInt(value);
+    if(value.startsWith("0")){
+        const intValue = parseInt(value.slice(0, value.length));
+        
         if(intValue < 1 || intValue>12){
             isError = true;
         }else{
-            isError =false;
+            isError = false;
         }
+    }else{
+        isError = checkError;
     }
-    result = {value, isError}
+    result = {value, isError};
     return result;
 };
 /*
@@ -78,7 +79,7 @@ export const validateFormFields= (key: string, value: string, state:IccError):IV
     }else if(key === "year"){
         state.isYearError = validate("",value);
     }else if(key === "fullName"){
-        state.isNameError = validate(key,value);
+        state.isNameError = validate(key,value.toLowerCase());
     }else if(key === "CCV"){
         state.isCCVError = validate(key,value);
     }

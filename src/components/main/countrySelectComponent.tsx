@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Input } from '../../styles/generalStyles';
 import { ICountriesSelect } from '../interfaces/interfaces';
+import { CountryType } from '../interfaces/types';
 
 const CountrySelectComponent:FC<ICountriesSelect> = ({data, country, setState, children}) =>{
     const [search, updateSearch] = useState("");
@@ -26,8 +27,8 @@ const CountrySelectComponent:FC<ICountriesSelect> = ({data, country, setState, c
                 {
                 search!==""?
                     data.countries
-                        .filter((country:any)=>country.name.toLowerCase().includes(search.toLowerCase()))
-                        .map((country:any)=>{
+                        .filter((country:CountryType)=>country.name.toLowerCase().includes(search.toLowerCase()))
+                        .map((country:CountryType)=>{
                             return(
                                 <div className="list-item" key={country.iso} onClick={()=>setState("country", country)}>
                                     <p>(+{country.prefix})-{country.name}</p>
