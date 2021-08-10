@@ -47,7 +47,9 @@ const MainComponent:FC = ()=>{
         }
     }
     useEffect (() => {
-        handleGetData();    
+        
+        handleGetData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps    
       },[]);
     return(
         

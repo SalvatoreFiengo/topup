@@ -1,16 +1,4 @@
 import { IccError, validation } from "../components/interfaces/interfaces";
-export const validatePhoneNumber=(phone:string, setState:(bool:boolean)=>void)=>{
-    const re = /^\+\d+\s\-\s\d{7,10}$/;
-    const test=re.test(phone);
-    if (test===false){
-        setState(true);
-    }else{
-        if(phone.length < 6){
-            setState(true);
-        }
-        setState(false);
-    };
-};
 
 export const validate=(key:string, value:string|undefined):boolean=>{
     if(value!==undefined && value!==""){
@@ -18,7 +6,7 @@ export const validate=(key:string, value:string|undefined):boolean=>{
             let re;
             switch(key){
                 case "phoneNumber":
-                    re = /^\+\d+\s\-\s\d{7,10}$/;
+                    re = /^\+\d+\s-\s\d{7,10}$/;
                     break;
                 case "fullName":
                     re=/^[A-Z][a-z]+\s[A-Z][a-z]+$/;

@@ -28,7 +28,9 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
     });
 
     useEffect(()=>{
+
         handleResetForm();
+         // eslint-disable-next-line react-hooks/exhaustive-deps 
     },[]);
 
     const handleFormOnChange = (event:React.FormEvent<HTMLInputElement>)=>{
@@ -68,6 +70,17 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
         setShowInfo(null);
         setState("cardNumber",formData.cardNumber)
     };
+
+
+    const handleShowModal = ():void=>{
+        toggleConfirmationModal(!isConfirmationModal);
+    };
+
+    const handleBackButton = ():void=>{
+        setState("cardNumber",null);
+        setState("amount",null);
+    };
+
     const handleResetForm = ():void=>{
         updateFormData({
             fullName: "",
@@ -81,15 +94,6 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
         });
         setIsError({...error, isNotCheckout: true})
     }
-
-    const handleShowModal = ():void=>{
-        toggleConfirmationModal(!isConfirmationModal);
-    };
-
-    const handleBackButton = ():void=>{
-        setState("cardNumber",null);
-        setState("amount",null);
-    };
 
     const confirmationMsg = (phone:string|undefined|null)=>(<div><p>Your Top Up to:</p>
         <p>{phone}</p>
