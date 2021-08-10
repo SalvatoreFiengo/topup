@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ModalComponent from '../modal/modal';
-import { validateFormFields } from '../../helper/validation';
+import { validateFormFields, checkEndDateIsError } from '../../helper/validation';
 import { Input, Button, Error } from '../../styles/generalStyles';
 import { IccError, ICreditCardComponent, IFormData } from '../interfaces/interfaces';
 
@@ -97,6 +97,13 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
         <p>{phone}</p>
         <p>is successful!</p></div>);
 
+    const getExpireDateError = ():boolean=>{
+        if(!error.isMonthError && !error.isYearError){
+            return checkEndDateIsError(formData.month, formData.year);
+        }
+        return false;
+    };
+
     return(
         <CreditCard>
             {cardNumberProp===null?
@@ -119,8 +126,11 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
                         <label> <div>End Date</div>
                             <Input className="left" type="text" placeholder="01" maxLength={2} name="month" value={formData.month} onChange={handleFormOnChange}/>
                             <Input className="right" type="text" placeholder="21" maxLength={2} name="year" value={formData.year} onChange={handleFormOnChange}/>
-                                <div>{error.isMonthError?<Error multi={true}>Month is {formData.month!==""?'invalid':'missing'}</Error>:null}
-                                {error.isYearError?<Error multi={true}>Year is {formData.year!==""?'invalid':'missing'}</Error>:null}</div>
+                                <div>
+                                    {error.isMonthError?<Error multi={true}>Month is {formData.month!==""?'invalid':'missing'}</Error>:null}
+                                    {error.isYearError?<Error multi={true}>Year is {formData.year!==""?'invalid':'missing'}</Error>:null}
+                                    {getExpireDateError()?<Error multi={true}>Card Expired</Error>:null}
+                                </div>
                         </label>    
                     </div>
                     <div className="form-section">

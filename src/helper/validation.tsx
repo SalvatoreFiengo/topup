@@ -47,9 +47,8 @@ export const validate=(key:string, value:string|undefined):boolean=>{
 const checkMonthIsError = (value: string, isError:boolean):validationIsErrorReturnType=>{
     const checkError= validate("",value);
     let result:validationIsErrorReturnType;
-
-    if(value.startsWith("0")){
-        const intValue = parseInt(value.slice(0, value.length));
+    if(value !== ""){
+        const intValue = parseInt(value);
         
         if(intValue < 1 || intValue>12){
             isError = true;
@@ -67,6 +66,7 @@ const checkMonthIsError = (value: string, isError:boolean):validationIsErrorRetu
     to validate all form fields
 */
 export const validateFormFields= (key: string, value: string, state:IccError):IValidation=>{
+
     if(key === "cardNumber" && value === ""){
         state.isCardError = true;
     }else if( 
@@ -85,3 +85,12 @@ export const validateFormFields= (key: string, value: string, state:IccError):IV
     }
     return {value,state};
 };
+
+export const checkEndDateIsError = (month:string, year:string):boolean=>{
+    const today = new Date();
+    const fullYearInt = parseInt("20"+year);
+    const monthInt = parseInt(month);
+    const cardEndDate = new Date(fullYearInt, monthInt, today.getDate());
+
+    return cardEndDate<today;
+}
