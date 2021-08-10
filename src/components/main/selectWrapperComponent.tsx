@@ -28,8 +28,7 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
     }
     const formatInfoCreditCard = (creditCard:string|null):string=>{
         if(creditCard!==null){
-            const creditCardArray = creditCard.split("-")
-            const hiddenCreditCard = "* ".repeat(3) + " " + creditCardArray[creditCardArray.length-1];
+            const hiddenCreditCard = "* ".repeat(3) + " " + creditCard.slice(creditCard.length-4, creditCard.length);
             return hiddenCreditCard;
         }
         else{

@@ -37,7 +37,7 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
         const key = event.currentTarget.name;
         let value = event.currentTarget.value;
 
-        const validation = validateFormFields(key, value, error, formData.cardNumber);
+        const validation = validateFormFields(key, value, error);
 
         setIsError(validation.state);
 
@@ -113,7 +113,7 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
                     </div>
                     <div className="form-section">
                         <label>Card Number
-                            <Input className="input" type="text" placeholder="Card" maxLength={19} name="cardNumber" value={formData.cardNumber} onChange={handleFormOnChange}/>
+                            <Input className="input" type="text" placeholder="Card" maxLength={17} name="cardNumber" value={formData.cardNumber} onChange={handleFormOnChange}/>
                             {error.isCardError?<Error multi={false}>Card is {formData.cardNumber!==""?'invalid':'missing'}, please insert only numbers </Error>:null}
                         </label>
                     </div>

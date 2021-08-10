@@ -1,6 +1,10 @@
 import { IccError, IValidation } from "../components/interfaces/interfaces";
 import { validationIsErrorReturnType } from "../components/interfaces/types";
 
+/*
+    The code below will evaluate form values 
+    against set regex
+*/
 export const validate=(key:string, value:string|undefined):boolean=>{
     if(value!==undefined && value!==""){
         const getRe = ():RegExp=>{
@@ -36,20 +40,10 @@ export const validate=(key:string, value:string|undefined):boolean=>{
     };   
 };
 
-const checkCardFormattedIsError = (key: string,value: string, isError:boolean, valueToCheckAgainst?:string):validationIsErrorReturnType=>{
-    let originalValue = value.replace(/-/g,"");
-    let result:validationIsErrorReturnType;
-
-    isError = validate(key, originalValue);
-    const checkOriginalValue = value.length > 0 && originalValue.length %4 ===0 && originalValue.length<16;
-    const checkValueFromState = valueToCheckAgainst !== undefined && valueToCheckAgainst.length > 0 && value.length < valueToCheckAgainst.length;
-    if(checkOriginalValue && !checkValueFromState){
-        value+="-";
-    };
-    result = {value, isError}
-    return result;
-};
-
+/*
+    The code below will format form value for the month 
+    and perform the evaluation using 'validate' function
+*/
 const checkMonthIsError = (value: string, isError:boolean):validationIsErrorReturnType=>{
     const checkError= validate("",value);
     let result:validationIsErrorReturnType;
@@ -67,16 +61,17 @@ const checkMonthIsError = (value: string, isError:boolean):validationIsErrorRetu
     result = {value, isError}
     return result;
 };
-
-export const validateFormFields= (key: string, value: string, state:IccError, valueToCheckAgainst?:string):IValidation=>{
+/*
+    'validateFormFields' will use the functions above 
+    to validate all form fields
+*/
+export const validateFormFields= (key: string, value: string, state:IccError):IValidation=>{
     if(key === "cardNumber" && value === ""){
         state.isCardError = true;
     }else if( 
-            key === "cardNumber"&&
-            valueToCheckAgainst !== undefined 
-        ){
-        const formattedAndEvaluated = checkCardFormattedIsError(key, value, state.isCardError, valueToCheckAgainst);   
-        [value, state.isCardError]=[formattedAndEvaluated.value,formattedAndEvaluated.isError];
+            key === "cardNumber"
+        ){ 
+        state.isCardError= validate(key, value);
     }else if(key === "month"){
         const validatedMonth= checkMonthIsError(value, state.isMonthError);
         [value, state.isMonthError] = [validatedMonth.value, validatedMonth.isError];
