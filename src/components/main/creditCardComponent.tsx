@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import ModalComponent from '../modal/modal';
 import { validateFormFields } from '../../helper/validation';
 import { Input, Button, Error } from '../../styles/generalStyles';
-import { IccError, IcreditCardComponent, IformData } from '../interfaces/interfaces';
+import { IccError, ICreditCardComponent, IFormData } from '../interfaces/interfaces';
 
-const CreditCardComponent: FC<IcreditCardComponent> =({phoneNumberProp, amountProp, children, setState})=>{
-    const [formData, updateFormData] = useState<IformData>({
+const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountProp, children, setState})=>{
+    const [formData, updateFormData] = useState<IFormData>({
         fullName: "",
         cardNumber: "",
         month: "",
@@ -16,7 +16,7 @@ const CreditCardComponent: FC<IcreditCardComponent> =({phoneNumberProp, amountPr
         amount: "",
         currency: "",
     });
-    const [isConfirmationModal, toggleConfirmationModal] = useState(false);
+    const [isConfirmationModal, toggleConfirmationModal] = useState<boolean>(false);
     const [showInfo, setShowInfo] = useState<string|null>("show");
     const [error, setIsError] = useState<IccError>({
         isNameError: true,
@@ -38,11 +38,11 @@ const CreditCardComponent: FC<IcreditCardComponent> =({phoneNumberProp, amountPr
         const validation = validateFormFields(key, value, error, formData.cardNumber);
 
         setIsError(validation.state);
-        
+
         if(error.isNameError || error.isCardError){
-            setIsError({...error, isNotCheckout: false});
-        }else{
             setIsError({...error, isNotCheckout: true});
+        }else{
+            setIsError({...error, isNotCheckout: false});
         };
 
         updateFormData({
@@ -68,7 +68,7 @@ const CreditCardComponent: FC<IcreditCardComponent> =({phoneNumberProp, amountPr
         setShowInfo(null);
         setState("cardNumber",formData.cardNumber)
     };
-    const handleResetForm = ()=>{
+    const handleResetForm = ():void=>{
         updateFormData({
             fullName: "",
             cardNumber: "",
@@ -82,11 +82,11 @@ const CreditCardComponent: FC<IcreditCardComponent> =({phoneNumberProp, amountPr
         setIsError({...error, isNotCheckout: true})
     }
 
-    const handleShowModal = ()=>{
+    const handleShowModal = ():void=>{
         toggleConfirmationModal(!isConfirmationModal);
     };
 
-    const handleBackButton = ()=>{
+    const handleBackButton = ():void=>{
         setState("cardNumber",null);
         setState("amount",null);
     };

@@ -1,6 +1,6 @@
 import { CountryType, OperatorType } from "./types";
 
-export interface Idata {
+export interface IData {
     countries:CountryType[],
     operators:OperatorType[],
     products:{
@@ -9,7 +9,7 @@ export interface Idata {
     }[]   
 };
 
-export interface IappMainState {
+export interface IAppMainState {
     phoneNumber: string,
     country: CountryType | null,
     operator: OperatorType | null,
@@ -26,26 +26,26 @@ export interface IccError {
     isNotCheckout: boolean;
 };
 
-export interface IcountriesSelect {
-    data:any;
+export interface ICountriesSelect {
+    data:IData;
     setState:(name:string, value:any)=>void;
     country: CountryType | undefined | null;
 };
 
-export interface IoperatorsSelect {
-    data: any;
+export interface IOperatorsSelect {
+    data: IData;
     iso: string|undefined|null;
     setState: (name:string, value:any)=>void;
     operator: OperatorType|null;
 };
 
-export interface IphoneNumberComponent {
+export interface IPhoneNumberComponent {
     prefix: string;
     setState: (name:string, value:any)=>void;
     phoneNumber: string | undefined;
 };
 
-export interface IformData {  
+export interface IFormData {  
     fullName: string;
     cardNumber: string;
     month: string;
@@ -56,13 +56,13 @@ export interface IformData {
     currency: string;  
 };
 
-export interface IcreditCardComponent {
+export interface ICreditCardComponent {
     phoneNumberProp: string;
     amountProp: string;
     setState:(name:string, value:any)=>void;
 }
 
-export type validation = {
+export interface validation {
     value: string;
     state: IccError
 };

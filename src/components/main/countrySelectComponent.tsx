@@ -1,12 +1,12 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Input } from '../../styles/generalStyles';
-import { IcountriesSelect } from '../interfaces/interfaces';
+import { ICountriesSelect } from '../interfaces/interfaces';
 
-const CountrySelectComponent:FC<IcountriesSelect> = ({data, setState, country, children}) =>{
+const CountrySelectComponent:FC<ICountriesSelect> = ({data, setState, country, children}) =>{
     const [search, updateSearch] = useState("");
     
-    const hanldeSearch = (event: React.FormEvent<HTMLInputElement>)=>{
+    const handleSearch = (event: React.FormEvent<HTMLInputElement>)=>{
         updateSearch(event.currentTarget.value)    
     };
 
@@ -20,7 +20,7 @@ const CountrySelectComponent:FC<IcountriesSelect> = ({data, setState, country, c
             :
             <>
                 <label >Search country
-                    <Input type="text" placeholder="Begin Search" value={search} onChange={hanldeSearch}/>
+                    <Input type="text" placeholder="Begin Search" value={search} onChange={handleSearch}/>
                 </label>
                 <div className="list-wrapper">
                 {

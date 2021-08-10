@@ -1,6 +1,6 @@
 import {FC, useState} from 'react';
 import styled from 'styled-components';
-import { Idata, IappMainState} from '../interfaces/interfaces';
+import { IData, IAppMainState} from '../interfaces/interfaces';
 import CountrySelectComponent from './countrySelectComponent';
 import AddPhoneNumber from './phoneNumberComponent';
 import OperatorsSelectComponent from './operatorsSelectComponent';
@@ -9,11 +9,11 @@ import CreditCardComponent from './creditCardComponent';
 import InfoComponent from './infoComponent';
 
 type SelectWrapperComponentTypes ={
-    data: Idata|null;
+    data: IData;
 }
 
 const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
-    const [state, setState] = useState<IappMainState>({
+    const [state, setState] = useState<IAppMainState>({
         phoneNumber: "",
         country: null,
         operator: null,
@@ -25,6 +25,16 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
             ...state,
             [name]:value
         }))
+    }
+    const formatInfoCreditCard = (creditCard:string|null):string=>{
+        if(creditCard!==null){
+            const creditCardArray = creditCard.split("-")
+            const hiddenCreditCard = "* ".repeat(3) + " " + creditCardArray[creditCardArray.length-1];
+            return hiddenCreditCard;
+        }
+        else{
+            return "";
+        }
     }
     return(
         <SelectWrapper>
@@ -103,7 +113,7 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
             }
             {state.amount!==null && state.amount!==undefined?
                 <CreditCardComponent phoneNumberProp={state.phoneNumber} amountProp={state.amount} setState={handleSetState}>
-                    <InfoComponent label={"Card"} msg={state.cardNumber} setState={()=>setState({
+                    <InfoComponent label={"Card"} msg={formatInfoCreditCard(state.cardNumber)} setState={()=>setState({
                             ...state,
                             cardNumber:null,
                             amount: null

@@ -12,13 +12,13 @@ const InfoComponent:FC<InfoComponentTypes> =({label, msg ,setState})=>{
     }
     return(
         <Info>
-            <div>
+            <div className="left">
                 <strong>{label}: </strong>
             </div> 
             <div className="msg-spacer">
                 <strong>{msg}</strong>
             </div> 
-            <div className="back" onClick={toggleInfo}>
+            <div className="back right" onClick={toggleInfo}>
                 <strong>Edit</strong>
                 <div className="arrow-right"></div>
             </div>
@@ -28,9 +28,19 @@ const InfoComponent:FC<InfoComponentTypes> =({label, msg ,setState})=>{
 const Info = styled.div`
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
     margin: 2rem 0 2rem 0;
+    div{
+        width: 30%;
+        &.left{
+            text-align: left;
+        }
+        &.right{
+            text-align: right;
+        }
+    }
     .msg-spacer{
+        text-align: center;
+        width: 40%;
         margin: 0 1em 0 1em;
     }
     .back{

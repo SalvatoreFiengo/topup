@@ -12,23 +12,31 @@ export const validatePhoneNumber=(phone:string, setState:(bool:boolean)=>void)=>
     };
 };
 
-export const validateFullName=(name:string|undefined):boolean=>{
-    if(name!==undefined && name!==""){
-        const re=/^[A-Z][a-z]+\s[A-Z][a-z]+$/;
-        const test=re.test(name);
-        if (test===false){
-            return true;
-        }else{
-            return false;
+export const validate=(key:string, value:string|undefined):boolean=>{
+    if(value!==undefined && value!==""){
+        const getRe = ()=>{
+            let re;
+            switch(key){
+                case "phoneNumber":
+                    re = /^\+\d+\s\-\s\d{7,10}$/;
+                    break;
+                case "fullName":
+                    re=/^[A-Z][a-z]+\s[A-Z][a-z]+$/;
+                    break;
+                case "cardNumber":
+                    re=/^\d{16}$/;
+                    break;
+                case "CCV":
+                    re=/^\d{3}$/;
+                    break;
+                default:
+                    re=/^\d{2}$/;
+                    break;
+            }
+            return re;
         }
-    }else{
-        return true;
-    };
-};
-export const validateDigits=(digits:string|undefined):boolean=>{
-    if(digits!==undefined && digits!==""){
-        const re=/^\d+$/;
-        const test=re.test(digits);
+        const re=getRe();
+        const test=re.test(value);
         if (test===false){
             return true;
         }else{
@@ -45,16 +53,17 @@ export const validateFormFields= (key: string, value: string, state:IccError, va
     }else if( 
             key === "cardNumber"&&
             valueToCheckAgainst !== undefined && 
-            value.length >= valueToCheckAgainst.length && 
-            valueToCheckAgainst.length<=16
+            value.length >= valueToCheckAgainst.length
         ){
         let originalValue = value.replace(/-/g,"");
-        state.isCardError = validateDigits(originalValue);
-        if(!state.isCardError && value.length>0 && originalValue.length %4 ===0){
+
+        state.isCardError = validate(key,originalValue);
+
+        if(value.length>0 && originalValue.length %4 ===0 && originalValue.length<16){
             value+="-";
         };
     }else if(key === "month"){
-        const checkError= validateDigits(value);
+        const checkError= validate("",value);
         if(checkError){
             state.isMonthError= checkError;
         }else if(!value.startsWith("0")){
@@ -66,11 +75,11 @@ export const validateFormFields= (key: string, value: string, state:IccError, va
             }
         }
     }else if(key === "year"){
-        state.isYearError = validateDigits(value);
+        state.isYearError = validate("",value);
     }else if(key === "fullName"){
-        state.isNameError = validateFullName(value);
+        state.isNameError = validate(key,value);
     }else if(key === "CCV"){
-        state.isCCVError = validateDigits(value);
+        state.isCCVError = validate(key,value);
     }
     return {value,state};
 };

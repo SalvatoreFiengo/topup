@@ -1,27 +1,26 @@
 import React, { FC, useState } from 'react';
 import { Input, Button, Error } from '../../styles/generalStyles';
-import { validatePhoneNumber } from '../../helper/validation';
-import { IphoneNumberComponent } from '../interfaces/interfaces';
+import { validate } from '../../helper/validation';
+import { IPhoneNumberComponent } from '../interfaces/interfaces';
 
-const AddPhoneNumberComponent: FC<IphoneNumberComponent> = ({prefix, setState, phoneNumber, children})=>{
+const AddPhoneNumberComponent: FC<IPhoneNumberComponent> = ({prefix, setState, phoneNumber, children})=>{
     const [phone, setPhone]= useState<string>("");
-    const [isError, setIsError] = useState(false);
+    const [isError, setIsError] = useState<boolean>(false);
 
-    const hanldeUpdatePhoneNumber = (event: React.FormEvent<HTMLInputElement>)=>{
+    const hanldeUpdatePhoneNumber = (event: React.FormEvent<HTMLInputElement>):void=>{
         const phone = event.currentTarget.value;
-        validatePhoneNumber(phone, setIsError);
-       
+        setIsError(validate("phoneNumber", phone));
         setPhone(formatPhoneNumber(phone, prefix));
 
     };
-    const handleOnClick = (event: React.MouseEvent<HTMLElement>)=>{
+    const handleOnClick = (event: React.MouseEvent<HTMLElement>):void=>{
         event.preventDefault();
         setState("phoneNumber", phone);
         setPhone("");
 
     };
 
-    const formatPhoneNumber = (phone:string, prefix:string)=>{
+    const formatPhoneNumber = (phone:string, prefix:string):string=>{
         let formatted = "";
         let formattedPrefix = "+"+prefix+" - "
         if(phone!==undefined && phone.length === formattedPrefix.length-1){

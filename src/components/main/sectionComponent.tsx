@@ -2,10 +2,10 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import SelectWrapperComponent from './selectWrapperComponent';
 import ModalComponent from '../modal/modal';
-import { Idata } from '../interfaces/interfaces';
+import { IData } from '../interfaces/interfaces';
 
 type SectionType = {
-    data:Idata|null;
+    data:IData;
     isOpen: boolean;
     error: string;
     toggleModal: ()=>void;

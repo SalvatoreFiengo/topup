@@ -1,55 +1,53 @@
 import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SectionComponent from './sectionComponent'; 
-import mockData from './mockData/mockData.json';
-import { Idata } from '../interfaces/interfaces';
+import mockData from '../../mockData/mockData.json';
+import { IData } from '../interfaces/interfaces';
+import { getData } from '../../api/data';
 
 type FetchDataType ={
-    data:Idata|null;
-    isLoading:boolean;
-    error:string;
-    isError:boolean;
+    data: IData;
+    isLoading: boolean;
+    error: string;
+    isError: boolean;
   };
 
 const MainComponent:FC = ()=>{
 
     const [fetchData, setData]= useState<FetchDataType>({
-        data: null,
+        data: {countries:[], operators:[], products:[]},
         isLoading:true,
         error:"",
-        isError: false,
+        isError: false
       });
-    const [isOpen, toggleModal] = useState(false);
-      const handleToggleModal = ()=>{
+    const [isOpen, toggleModal] = useState<boolean>(false);
+      const handleToggleModal = ():void=>{
           toggleModal(!isOpen);
       };
-    useEffect (() => {
-        const url = 'https://app.fakejson.com/q/xdOdc9ZF?token=M37SFqOXjnZXOBpUuOCRXA';
-        const fetchCountries = async ()=>{
+    const handleGetData = ():void=>{
         try{ 
-            const response = await fetch(url);
-            if (!response.ok) throw Error(response.statusText);
-            const body = await response.json();
-            setData({
-                ...fetchData,
-                data:body,
-                isLoading:false
-                })
-            }
-            catch(error){
-                const errorMsg='Oops ..Something went wrong';
+            getData()
+            .then((body)=>{
                 setData({
                     ...fetchData,
-                    error: errorMsg,
-                    isError: true,
-                    isLoading: false,
-                    data: mockData
+                    data:body,
+                    isLoading:false
                 })
-                toggleModal(true);
-            }
+            });
         }
-          
-        fetchCountries();
+        catch(error){
+            setData({
+                ...fetchData,
+                error: error.message,
+                isError: true,
+                isLoading: false,
+                data: mockData
+            })
+            toggleModal(true);
+        }
+    }
+    useEffect (() => {
+        handleGetData();    
       },[]);
     return(
         

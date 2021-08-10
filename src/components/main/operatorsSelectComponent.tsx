@@ -1,16 +1,17 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import { IoperatorsSelect } from '../interfaces/interfaces';
+import { IOperatorsSelect } from '../interfaces/interfaces';
+import { OperatorType } from '../interfaces/types';
 
-const OperatorsSelectComponent:FC<IoperatorsSelect> = ({data, iso, setState, operator, children})=>{
+const OperatorsSelectComponent:FC<IOperatorsSelect> = ({data, iso, setState, operator, children})=>{
     
-    const operators = iso===""?data.operators:data.operators.filter((operator:any)=>operator.iso===iso)
+    const operators = iso===""?data.operators:data.operators.filter((operator:OperatorType)=>operator.iso===iso)
     return(
         <OperatorsSelect>
             {operator===null?
             <>
                 <h2>Select your operator</h2>
-                {operators.map((op:any)=>{
+                {operators.map((op:OperatorType)=>{
                     return(
                         <div className="operator-card" key={op.id} onClick={()=>setState("operator",op)}><p>{op.name}</p></div>
                     );
