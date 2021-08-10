@@ -5,7 +5,7 @@ import { validateFormFields } from '../../helper/validation';
 import { Input, Button, Error } from '../../styles/generalStyles';
 import { IccError, ICreditCardComponent, IFormData } from '../interfaces/interfaces';
 
-const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountProp, children, setState})=>{
+const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountProp, children, setState, cardNumberProp})=>{
     const [formData, updateFormData] = useState<IFormData>({
         fullName: "",
         cardNumber: "",
@@ -17,7 +17,6 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
         currency: "",
     });
     const [isConfirmationModal, toggleConfirmationModal] = useState<boolean>(false);
-    const [showInfo, setShowInfo] = useState<string|null>("show");
     const [error, setIsError] = useState<IccError>({
         isNameError: true,
         isCardError: true,
@@ -31,7 +30,7 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
 
         handleResetForm();
          // eslint-disable-next-line react-hooks/exhaustive-deps 
-    },[]);
+    },[cardNumberProp]);
 
     const handleFormOnChange = (event:React.FormEvent<HTMLInputElement>)=>{
         const key = event.currentTarget.name;
@@ -67,7 +66,7 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
             amount: formattedAmount,
             currency: formattedCurrency,
         }));
-        setShowInfo(null);
+
         setState("cardNumber",formData.cardNumber)
     };
 
@@ -77,7 +76,6 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
     };
 
     const handleBackButton = ():void=>{
-        setState("cardNumber",null);
         setState("amount",null);
     };
 
@@ -101,7 +99,7 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
 
     return(
         <CreditCard>
-            {showInfo!==null?
+            {cardNumberProp===null?
             <>
                 <h2>Fill Your Credit Card Data</h2>
                 <CreditCardForm onSubmit={handleFormSubmit}>

@@ -111,11 +111,10 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
                 :null
             }
             {state.amount!==null && state.amount!==undefined?
-                <CreditCardComponent phoneNumberProp={state.phoneNumber} amountProp={state.amount} setState={handleSetState}>
+                <CreditCardComponent phoneNumberProp={state.phoneNumber} amountProp={state.amount} cardNumberProp={state.cardNumber} setState={handleSetState}>
                     <InfoComponent label={"Card"} msg={formatInfoCreditCard(state.cardNumber)} setState={()=>setState({
                             ...state,
-                            cardNumber:null,
-                            amount: null
+                            cardNumber:null
                         })}/>
                 </CreditCardComponent>:null
             }

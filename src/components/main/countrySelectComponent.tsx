@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Input } from '../../styles/generalStyles';
 import { ICountriesSelect } from '../interfaces/interfaces';
 
-const CountrySelectComponent:FC<ICountriesSelect> = ({data, setState, country, children}) =>{
+const CountrySelectComponent:FC<ICountriesSelect> = ({data, country, setState, children}) =>{
     const [search, updateSearch] = useState("");
     
     const handleSearch = (event: React.FormEvent<HTMLInputElement>)=>{

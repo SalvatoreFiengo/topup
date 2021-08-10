@@ -60,6 +60,7 @@ export interface ICreditCardComponent {
     phoneNumberProp: string;
     amountProp: string;
     setState:(name:string, value:any)=>void;
+    cardNumberProp: string|null;
 }
 
 export interface IValidation {
