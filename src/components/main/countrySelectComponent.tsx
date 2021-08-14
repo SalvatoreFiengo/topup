@@ -8,7 +8,7 @@ const CountrySelectComponent:FC<ICountriesSelect> = ({data, country, setState, c
     const [search, updateSearch] = useState("");
     
     const handleSearch = (event: React.FormEvent<HTMLInputElement>)=>{
-        updateSearch(event.currentTarget.value)    
+        updateSearch(event.currentTarget.value);    
     };
 
     return(

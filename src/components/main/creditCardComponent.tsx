@@ -93,7 +93,7 @@ const CreditCardComponent: FC<ICreditCardComponent> =({phoneNumberProp, amountPr
         setIsError({...error, isNotCheckout: true})
     }
 
-    const confirmationMsg = (phone:string|undefined|null)=>(<div><p>Your Top Up to:</p>
+    const confirmationMsg = (phone:string)=>(<div><p>Your Top Up to:</p>
         <p>{phone}</p>
         <p>is successful!</p></div>);
 

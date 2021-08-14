@@ -1,15 +1,18 @@
 import { FC } from 'react';
 import styled from 'styled-components';
-import {IData} from '../interfaces/interfaces'
+import {IData} from '../interfaces/interfaces';
+import { ProductType } from '../interfaces/types';
+
 type ProductsComponentTypes = {
     data: IData;
     id: string|undefined|null;
     setState: (name:string, value:any)=>void;
     amount: string| undefined | null;
-}
+};
+
 const ProductsComponent:FC<ProductsComponentTypes> = ({data, id, setState, amount, children})=>{
 
-    const product = data.products.filter((product:any) =>product.id===id);
+    const product = data.products.filter((product:ProductType) =>product.id===id);
 
     const formatProd = (prod: string)=>{
         const stringArray = prod.split(" ");

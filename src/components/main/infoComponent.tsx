@@ -2,9 +2,9 @@ import { FC } from 'react';
 import styled from 'styled-components';
 
 type InfoComponentTypes = {
-    label: string | undefined | null;
-    setState:()=>void; 
-    msg: JSX.Element | string | undefined| null;  
+    label: string | undefined | null,
+    setState:()=>void,
+    msg: JSX.Element | string | undefined | null  
 }
 const InfoComponent:FC<InfoComponentTypes> =({label, msg ,setState})=>{
     const toggleInfo = ()=>{

@@ -47,7 +47,8 @@ export const validate=(key:string, value:string|undefined):boolean=>{
 const checkMonthIsError = (value: string, isError:boolean):validationIsErrorReturnType=>{
     const checkError= validate("",value);
     let result:validationIsErrorReturnType;
-    if(value !== ""){
+
+    if(!checkError && value !== ""){
         const intValue = parseInt(value);
         
         if(intValue < 1 || intValue>12){
@@ -57,7 +58,8 @@ const checkMonthIsError = (value: string, isError:boolean):validationIsErrorRetu
         }
     }else{
         isError = checkError;
-    }
+    };
+    
     result = {value, isError};
     return result;
 };

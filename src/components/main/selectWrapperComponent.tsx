@@ -53,7 +53,7 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
                     })}
                 />
             </CountrySelectComponent>
-            {state.country!==null && state.country!==undefined?
+            {state.country!==null?
                 <AddPhoneNumber 
                     prefix={state.country.prefix} 
                     setState={handleSetState} 
@@ -72,7 +72,7 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
                 </AddPhoneNumber>
                 :null 
             } 
-            {state.phoneNumber!=="" && state.country!==null && state.country!==undefined?
+            {state.phoneNumber!=="" && state.country!==null?
                 <OperatorsSelectComponent 
                     data={data} 
                     iso={state.country.iso} 
@@ -91,7 +91,7 @@ const SelectWrapperComponent:FC<SelectWrapperComponentTypes>=({data})=>{
                     </OperatorsSelectComponent>
                 :null 
             } 
-            {state.operator!==null && state.country!==null && state.country!==undefined?
+            {state.operator!==null && state.country!==null?
                 <ProductComponent 
                     data={data} 
                     id={state.operator.id} 
